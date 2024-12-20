@@ -30,7 +30,7 @@ git clone https://github.com/ugo-studio/vlan-proxy.git
 cd vlan-proxy
 ```
 
-2. Install Dependencies
+### 2. Install Dependencies
 
 Install the required Node.js packages:
 
@@ -38,7 +38,7 @@ Install the required Node.js packages:
 npm install
 ```
 
-3. Update VLAN IP Configuration (Optional)
+### 3. Update VLAN IP Configuration (Optional)
 
 The server uses the localAddress option to bind to specific VLAN IPs.
 
@@ -49,7 +49,7 @@ If no VLAN IP is provided (e.g., /null/...), the server will use the default net
 
 ## Usage
 
-1. Start the Server
+### 1. Start the Server
 
 Run the server:
 
@@ -63,22 +63,22 @@ By default, the server listens on port 5753. To change the port, set the PORT en
 PORT=8080 npm run start
 ```
 
-2. Access the Endpoints
+### 2. Access the Endpoints
 
-Root Endpoint:
+- `Root Endpoint`:
 
-URL: http://localhost:5753/
+    - URL: http://localhost:5753/
 
-Response: "Hello Hono!"
+    - Response: "Hello Hono!"
 
 
-Proxy Endpoint:
+- `Proxy Endpoint`:
 
-Format: http://localhost:5753/:vlanIP/:targetURL
+    - Format: http://localhost:5753/:vlanIP/:targetURL
 
-:vlanIP: The VLAN IP to use for the outgoing request (use null to ignore).
+       - :vlanIP: The VLAN IP to use for the outgoing request (use null to ignore).
 
-:targetURL: The URL to proxy the request to.
+       - :targetURL: The URL to proxy the request to.
 
 
 
@@ -95,7 +95,7 @@ If 192.168.1.1 is a valid VLAN IP, the request will be forwarded to https://exam
 
 ## Notes
 
-Error Handling:
+### Error Handling:
 
 If the targetURL is invalid or there’s an issue with the proxy request, the server returns an error response.
 
@@ -107,16 +107,16 @@ Example error response:
 }
 ```
 
-Local Address Fallback:
+### Local Address Fallback:
 
 If vlanIP is set to null, the default network interface is used.
 
 
 ---
 
-Example
+## Example
 
-Proxy Request with VLAN IP:
+### Proxy Request with VLAN IP:
 
 ```bash
 curl http://localhost:5753/192.168.1.1/https://jsonplaceholder.typicode.com/posts
@@ -129,7 +129,7 @@ Target URL: https://jsonplaceholder.typicode.com/posts
 Response: The response from https://jsonplaceholder.typicode.com/posts is streamed back to the client.
 
 
-Proxy Request Without VLAN IP:
+### Proxy Request Without VLAN IP:
 
 ```bash
 curl http://localhost:5753/null/https://jsonplaceholder.typicode.com/posts
@@ -140,9 +140,9 @@ This routes the request through the default network interface.
 
 ---
 
-Troubleshooting
+## Troubleshooting
 
-1. Invalid VLAN IP:
+### 1. Invalid VLAN IP:
 
 Ensure the VLAN IP is configured on your system.
 
@@ -150,7 +150,7 @@ Use `null` if no VLAN IP is required.
 
 
 
-2. Invalid Target URL:
+### 2. Invalid Target URL:
 
 Ensure the targetURL is correctly URL-encoded.
 
