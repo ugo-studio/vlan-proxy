@@ -28,12 +28,15 @@ Clone the repository or create a new folder for the project:
 ```bash
 git clone https://github.com/ugo-studio/vlan-proxy.git
 cd vlan-proxy
+```
 
 2. Install Dependencies
 
 Install the required Node.js packages:
 
+```bash
 npm install
+```
 
 3. Update VLAN IP Configuration (Optional)
 
@@ -44,17 +47,21 @@ If no VLAN IP is provided (e.g., /null/...), the server will use the default net
 
 ---
 
-Usage
+## Usage
 
 1. Start the Server
 
 Run the server:
 
-`npm run start`
+```bash
+npm run start
+```
 
 By default, the server listens on port 5753. To change the port, set the PORT environment variable:
 
-`PORT=8080 npm run start`
+```bash
+PORT=8080 npm run start
+```
 
 2. Access the Endpoints
 
@@ -77,14 +84,16 @@ Format: http://localhost:5753/:vlanIP/:targetURL
 
 Example:
 
+```bash
 curl http://localhost:5753/192.168.1.1/https://example.com/path?query=value
+```
 
 If 192.168.1.1 is a valid VLAN IP, the request will be forwarded to https://example.com/path?query=value using that IP.
 
 
 ---
 
-Notes
+## Notes
 
 Error Handling:
 
@@ -92,9 +101,11 @@ If the targetURL is invalid or there’s an issue with the proxy request, the se
 
 Example error response:
 
+```json
 {
   "error": "Invalid targetURL"
 }
+```
 
 Local Address Fallback:
 
@@ -107,7 +118,9 @@ Example
 
 Proxy Request with VLAN IP:
 
+```bash
 curl http://localhost:5753/192.168.1.1/https://jsonplaceholder.typicode.com/posts
+```
 
 VLAN IP: 192.168.1.1
 
@@ -118,7 +131,9 @@ Response: The response from https://jsonplaceholder.typicode.com/posts is stream
 
 Proxy Request Without VLAN IP:
 
+```bash
 curl http://localhost:5753/null/https://jsonplaceholder.typicode.com/posts
+```
 
 This routes the request through the default network interface.
 
@@ -131,7 +146,7 @@ Troubleshooting
 
 Ensure the VLAN IP is configured on your system.
 
-Use null if no VLAN IP is required.
+Use `null` if no VLAN IP is required.
 
 
 
@@ -142,7 +157,9 @@ Ensure the targetURL is correctly URL-encoded.
 
 Example:
 
+```bash
 curl http://localhost:5753/192.168.1.1/https%3A%2F%2Fexample.com
+```
 
 
 
