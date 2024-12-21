@@ -6,8 +6,7 @@ This document explains how to set up and use the **VLAN Proxy Server** implement
 
 ## Features
 
-1. **Root Endpoint**: A simple test endpoint at `/` that returns a "Hello Hono!" message.
-2. **Proxy Endpoint**: Forward requests using a specified VLAN IP.
+1. **Proxy Endpoint**: Forward requests using a specified VLAN IP.
 
    **Endpoint format**: `/:vlanIP/:targetURL`  
    **Example**: `http://localhost:5753/192.168.1.1/https://example.com`
