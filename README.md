@@ -170,5 +170,3 @@ curl http://localhost:5753/192.168.1.1/https%3A%2F%2Fexample.com
 
 This project is licensed under the MIT License.
 
-This formatting improves readability by clearly organizing sections, bolding important text, and adding consistent spacing.
-
