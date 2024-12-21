@@ -7,9 +7,12 @@ import fetch from 'node-fetch';
 
 const app = new Hono();
 
+const httpAgent = http.Agent;
+const httpsAgent = https.Agent;
+
 // Proxy handler
 app.get("/:vlanIP/*", async (c) => {
-  const vlanIP = c.req.param("vlanIP");
+  const vlanIP = c.req.param("vlanIP").trim();
 
   // Capture everything after the VLAN IP
   const targetURL = c.req.url.substring(
@@ -30,27 +33,25 @@ app.get("/:vlanIP/*", async (c) => {
     const parsedURL = new URL(target);
 
     // Use `agent` with the localAddress option
-    const HTTPAgent = parsedURL.protocol.startsWith("http:")
-      ? http.Agent
-      : https.Agent;
-    const agent = new HTTPAgent({
-      localAddress: vlanIP === "null" ? undefined : vlanIP,
-    });
+    const agent = new (parsedURL.protocol === "http:" ? httpAgent : httpsAgent)(
+      {
+        localAddress: vlanIP === "null" ? undefined : vlanIP,
+      }
+    );
 
     // Fetch with agant
     const response = await fetch(parsedURL.toString(), {
       agent,
-      method: c.req.raw.method,
-      headers: c.req.raw.headers,
-      body: c.req.method !== "GET" ? await c.req.text() : null,
+      // method: c.req.raw.method,
+      // headers: c.req.raw.headers,
+      // body: c.req.method !== "GET" ? await c.req.text() : null,
     });
 
     // Stream the response back to the client
-    return c.newResponse(
-      response.body as any,
-      response.status as any,
-      Object.fromEntries(response.headers.entries())
-    );
+    return new Response(await response.arrayBuffer(), {
+      status: response.status,
+      headers: Object.fromEntries(response.headers.entries()),
+    });
   } catch (err: any) {
     console.error(
       `Failed to proxy url(${targetURL}) through ip(${vlanIP}), error(${err.message})`
