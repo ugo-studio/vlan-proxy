@@ -42,12 +42,12 @@ app.get("/:vlanIP/*", async (c) => {
     // Fetch with agant
     const response = await fetch(parsedURL, {
       agent,
-      method: c.req.raw.method,
-      headers: c.req.raw.headers,
-      body:
-        c.req.method === "GET" || c.req.raw.body === null
-          ? null
-          : Buffer.from(await c.req.arrayBuffer()),
+      // method: c.req.raw.method,
+      // headers: c.req.raw.headers,
+      // body:
+      //   c.req.method === "GET" || c.req.raw.body === null
+      //     ? null
+      //     : Buffer.from(await c.req.arrayBuffer()),
     });
 
     // Stream the response back to the client
