@@ -5,10 +5,9 @@ import http from 'http';
 import https from 'https';
 import fetch from 'node-fetch';
 
-const app = new Hono();
+import { getRequestOptions } from './utils.js';
 
-const httpAgent = http.Agent;
-const httpsAgent = https.Agent;
+const app = new Hono();
 
 // Proxy handler
 app.get("/:vlanIP/*", async (c) => {
@@ -33,22 +32,16 @@ app.get("/:vlanIP/*", async (c) => {
     const parsedURL = new URL(target);
 
     // Use `agent` with the localAddress option
-    const agent = new (parsedURL.protocol === "http:" ? httpAgent : httpsAgent)(
-      {
-        localAddress: vlanIP === "null" ? undefined : vlanIP,
-      }
-    );
+    const agent = new (
+      parsedURL.protocol === "http:" ? http.Agent : https.Agent
+    )({
+      localAddress: vlanIP === "null" ? undefined : vlanIP,
+    });
+
+    const requestOptions = await getRequestOptions(c.req.raw, parsedURL);
 
     // Fetch with agant
-    const response = await fetch(parsedURL, {
-      agent,
-      // method: c.req.raw.method,
-      // headers: c.req.raw.headers,
-      // body:
-      //   c.req.method === "GET" || c.req.raw.body === null
-      //     ? null
-      //     : Buffer.from(await c.req.arrayBuffer()),
-    });
+    const response = await fetch(parsedURL, { ...requestOptions, agent });
 
     // Stream the response back to the client
     return c.newResponse(
