@@ -42,16 +42,20 @@ app.get("/:vlanIP/*", async (c) => {
     // Fetch with agant
     const response = await fetch(parsedURL.toString(), {
       agent,
-      // method: c.req.raw.method,
-      // headers: c.req.raw.headers,
-      // body: c.req.method !== "GET" ? await c.req.text() : null,
+      method: c.req.raw.method,
+      headers: c.req.raw.headers,
+      body:
+        c.req.method === "GET" || c.req.raw.body === null
+          ? null
+          : Buffer.from(await c.req.arrayBuffer()),
     });
 
     // Stream the response back to the client
-    return new Response(await response.arrayBuffer(), {
-      status: response.status,
-      headers: Object.fromEntries(response.headers.entries()),
-    });
+    return c.newResponse(
+      response.body as any,
+      response.status as any,
+      Object.fromEntries(response.headers.entries())
+    );
   } catch (err: any) {
     console.error(
       `Failed to proxy url(${targetURL}) through ip(${vlanIP}), error(${err.message})`
