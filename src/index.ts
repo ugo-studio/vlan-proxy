@@ -3,10 +3,10 @@ import 'dotenv/config';
 import http from 'node:http';
 import https from 'node:https';
 
-import hono from 'hono';
+import { Hono } from 'hono';
 import fetch from 'node-fetch';
 
-const app = new hono.Hono();
+const app = new Hono();
 
 // Proxy handler
 app.get("/:vlanIP/*", async (c) => {
