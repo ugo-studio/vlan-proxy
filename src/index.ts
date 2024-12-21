@@ -21,14 +21,14 @@ app.get("/:vlanIP/*", async (c) => {
     return c.json({ error: "Invalid targetURL" }, 400);
   }
 
+  console.log(`Proxying url(${targetURL}) through ip(${vlanIP})`);
+
   try {
     // Construct the URL
     const target = decodeURIComponent(targetURL);
 
     // Parse and validate the target URL
     const parsedURL = new URL(target);
-
-    console.log(`Proxying url(${parsedURL}) through ip(${vlanIP})`);
 
     // Use `fetch` with the localAddress option
     const response = await fetch(parsedURL.toString(), {
@@ -48,7 +48,7 @@ app.get("/:vlanIP/*", async (c) => {
     );
   } catch (err: any) {
     console.error(
-      `Failed to proxy "${targetURL}" through ip(${vlanIP}), error(${err.message})`
+      `Failed to proxy url(${targetURL}) through ip(${vlanIP}), error(${err.message})`
     );
     return c.json({ error: err.message }, 500);
   }
