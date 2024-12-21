@@ -35,7 +35,8 @@ app.get("/:vlanIP/*", async (c) => {
       : https.Agent;
     const agent = new HTTPAgent({
       localAddress: vlanIP === "null" ? undefined : vlanIP,
-    });
+      allowPartialTrustChain: true,
+    } as any);
 
     // Fetch with agant
     const response = await fetch(parsedURL.toString(), {
