@@ -17,8 +17,7 @@ This document explains how to set up and use the **VLAN Proxy Server** implement
 
 ### Prerequisites
 
-- **Node.js**: Ensure Node.js is installed (**v18+** recommended).
-- **NPM**: Comes with Node.js; required to install dependencies.
+- **Bunjs**: Ensure Bun.js is installed (**v1.1.37+** recommended).
 
 ### 1. Clone the Repository
 
@@ -34,7 +33,7 @@ cd vlan-proxy
 Install the required Node.js packages:
 
 ```bash
-npm install
+bun install
 ```
 
 ### 3. Update VLAN IP Configuration (Optional)
@@ -52,13 +51,13 @@ If no VLAN IP is provided (e.g., /null/...), the server will use the default net
 Run the server:
 
 ```bash
-npm run start
+bun run start
 ```
 
 By default, the server listens on port 5753. To change the port, set the PORT environment variable:
 
 ```bash
-PORT=8080 npm run start
+PORT=8080 bun run start
 ```
 
 ### 2. Access the Endpoints

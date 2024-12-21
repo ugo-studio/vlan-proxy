@@ -1,13 +1,12 @@
 import 'dotenv/config';
 
-import { Hono } from 'hono';
-import http from 'http';
-import https from 'https';
+import http from 'node:http';
+import https from 'node:https';
+
+import hono from 'hono';
 import fetch from 'node-fetch';
 
-import { serve } from '@hono/node-server';
-
-const app = new Hono();
+const app = new hono.Hono();
 
 // Proxy handler
 app.get("/:vlanIP/*", async (c) => {
@@ -68,12 +67,9 @@ app.get("/", (c) => {
 });
 
 // Start server
-serve(
-  {
-    fetch: app.fetch,
-    port: Number(process.env.PORT || 5753),
-  },
-  ({ port }) => {
-    console.log(`Proxy server is running on http://localhost:${port}`);
-  }
-);
+const { port } = Bun.serve({
+  fetch: app.fetch,
+  port: Number(process.env.PORT || 5753),
+});
+
+console.log(`Proxy server is running on http://localhost:${port}`);

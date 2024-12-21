@@ -5,7 +5,7 @@
     "strict": true,
     "verbatimModuleSyntax": true,
     "skipLibCheck": true,
-    "types": ["node", "./types.d.ts"],
+    "types": ["bun", "./types.d.ts"],
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx"
   }
