@@ -1,8 +1,7 @@
 import { Hono } from 'hono';
-import {
-  Agent,
-  fetch,
-} from 'undici';
+import http from 'http';
+import https from 'https';
+import fetch from 'node-fetch';
 
 import { serve } from '@hono/node-server';
 
@@ -30,14 +29,20 @@ app.get("/:vlanIP/*", async (c) => {
     // Parse and validate the target URL
     const parsedURL = new URL(target);
 
-    // Use `fetch` with the localAddress option
+    // Use `agent` with the localAddress option
+    const HTTPAgent = parsedURL.protocol.startsWith("http:")
+      ? http.Agent
+      : https.Agent;
+    const agent = new HTTPAgent({
+      localAddress: vlanIP === "null" ? undefined : vlanIP,
+    });
+
+    // Fetch with agant
     const response = await fetch(parsedURL.toString(), {
+      agent,
       method: c.req.raw.method,
       headers: c.req.raw.headers,
       body: c.req.method !== "GET" ? await c.req.text() : null,
-      dispatcher: new Agent({
-        localAddress: vlanIP === "null" ? undefined : vlanIP,
-      }),
     });
 
     // Stream the response back to the client
