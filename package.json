@@ -2,6 +2,7 @@
   "name": "vlan-proxy",
   "type": "module",
   "scripts": {
+    "test": "node scripts/test.js",
     "dev": "tsx watch src/index.ts",
     "start": "tsx src/index.ts"
   },
