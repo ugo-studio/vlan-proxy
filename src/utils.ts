@@ -1,4 +1,5 @@
-import { type Response } from 'node-fetch';
+import type { StatusCode } from 'hono/utils/http-status';
+import type { Response } from 'node-fetch';
 
 async function getRequestOptions(request: Request) {
   const method = request.method;
@@ -12,10 +13,13 @@ async function getRequestOptions(request: Request) {
   return { method, body, headers };
 }
 
-function getResponseOptions(response: Response, _targetUrl: URL) {
-  const body = response.body as any;
-  const status = response.status as any;
+function getResponseOptions(response: Response) {
+  const body = response.body as ReadableStream | null;
+  const status = response.status as StatusCode;
   const headers = Object.fromEntries(response.headers.entries());
+
+  // BUG: Bunjs remove's content-length header
+  headers["x-content-length"] = headers["content-length"];
 
   // TODO: update `Location` header
 

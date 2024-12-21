@@ -46,7 +46,7 @@ app.get("/:vlanIP/*", async (c) => {
     const response = await fetch(parsedURL, { ...requestOptions, agent });
 
     // Stream the response back to the client
-    const { body, status, headers } = getResponseOptions(response, parsedURL);
+    const { body, status, headers } = getResponseOptions(response);
     return c.newResponse(body, status, headers);
   } catch (err: any) {
     console.error(
