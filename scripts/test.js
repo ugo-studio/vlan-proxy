@@ -11,3 +11,5 @@ fetch("https://example.com", { agent })
   .then((res) => res.text())
   .then(console.log)
   .catch(console.error);
+
+console.log(agent, process.env.LOCAL_ADDRESS);
