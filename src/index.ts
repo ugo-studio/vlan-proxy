@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 import { Hono } from 'hono';
 import http from 'http';
 import https from 'https';
