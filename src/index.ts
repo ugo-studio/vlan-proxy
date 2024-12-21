@@ -33,7 +33,7 @@ app.get("/:vlanIP/*", async (c) => {
     const HTTPAgent = parsedURL.protocol.startsWith("http:")
       ? http.Agent
       : https.Agent;
-    const agent = new HTTPAgent({
+    const agent = new http.Agent({
       localAddress: vlanIP === "null" ? undefined : vlanIP,
     });
 
