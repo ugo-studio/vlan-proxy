@@ -1,9 +1,8 @@
 import 'dotenv/config';
 
-import http from 'node:http';
-import https from 'node:https';
-
 import { Hono } from 'hono';
+import http from 'http';
+import https from 'https';
 import fetch from 'node-fetch';
 
 const app = new Hono();

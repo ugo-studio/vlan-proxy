@@ -2,7 +2,7 @@
   "name": "vlan-proxy",
   "type": "module",
   "scripts": {
-    "test": "bun scripts/test.js",
+    "test": "bun scripts/test.ts",
     "dev": "bun run --watch src/index.ts",
     "start": "bun run src/index.ts"
   },
