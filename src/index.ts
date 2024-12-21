@@ -5,7 +5,10 @@ import http from 'http';
 import https from 'https';
 import fetch from 'node-fetch';
 
-import { getRequestOptions } from './utils.js';
+import {
+  getRequestOptions,
+  getResponseOptions,
+} from './utils.js';
 
 const app = new Hono();
 
@@ -38,17 +41,14 @@ app.get("/:vlanIP/*", async (c) => {
       localAddress: vlanIP === "null" ? undefined : vlanIP,
     });
 
-    const requestOptions = await getRequestOptions(c.req.raw, parsedURL);
-
     // Fetch with agant
+    const requestOptions = await getRequestOptions(c.req.raw, parsedURL);
     const response = await fetch(parsedURL, { ...requestOptions, agent });
 
     // Stream the response back to the client
-    return c.newResponse(
-      response.body as any,
-      response.status as any,
-      Object.fromEntries(response.headers.entries())
-    );
+    const { body, status, headers } = getResponseOptions(response, parsedURL);
+
+    return c.newResponse(body, status, headers);
   } catch (err: any) {
     console.error(
       `Failed to proxy url(${targetURL}) through ip(${vlanIP}), error(${err.message})`
