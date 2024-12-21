@@ -65,6 +65,8 @@ app.get("/", (c) => {
 const { port } = Bun.serve({
   fetch: app.fetch,
   port: Number(process.env.PORT || 5753),
+  development: false,
+  reusePort: true,
 });
 
 console.log(`Proxy server is running on http://localhost:${port}`);

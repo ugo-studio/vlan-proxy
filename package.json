@@ -4,7 +4,10 @@
   "scripts": {
     "test": "bun scripts/test.ts",
     "dev": "bun run --watch src/index.ts",
-    "start": "bun run src/index.ts"
+    "start": "bun run src/index.ts",
+    "cluster": "bun run scripts/cluster.ts",
+    "pm2Start": "pm2 start \"bun run start\" --watch --name vlan-proxy",
+    "pm2Cluster": "pm2 start \"bun run cluster\" --watch --name vlan-proxy-cluster"
   },
   "dependencies": {
     "dotenv": "^16.4.7",
