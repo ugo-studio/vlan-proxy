@@ -18,7 +18,7 @@ This document explains how to set up and use the **VLAN Proxy Server** implement
 
 ### Prerequisites
 
-- **Node.js**: Ensure Node.js is installed (**v18+** recommended).  
+- **Node.js**: Ensure Node.js is installed (**v18+** recommended).
 - **NPM**: Comes with Node.js; required to install dependencies.
 
 ### 1. Clone the Repository
@@ -44,7 +44,6 @@ The server uses the localAddress option to bind to specific VLAN IPs.
 
 If no VLAN IP is provided (e.g., /null/...), the server will use the default network interface.
 
-
 ---
 
 ## Usage
@@ -67,20 +66,17 @@ PORT=8080 npm run start
 
 - `Root Endpoint`:
 
-    - URL: http://localhost:5753/
+  - URL: http://localhost:5753/
 
-    - Response: "Hello Hono!"
-
+  - Response: "ugo-studio/vlan-proxy"
 
 - `Proxy Endpoint`:
 
-    - Format: http://localhost:5753/:vlanIP/:targetURL
+  - Format: http://localhost:5753/:vlanIP/:targetURL
 
-       - :vlanIP: The VLAN IP to use for the outgoing request (use null to ignore).
+    - :vlanIP: The VLAN IP to use for the outgoing request (use null to ignore).
 
-       - :targetURL: The URL to proxy the request to.
-
-
+    - :targetURL: The URL to proxy the request to.
 
 Example:
 
@@ -89,7 +85,6 @@ curl http://localhost:5753/192.168.1.1/https://example.com/path?query=value
 ```
 
 If 192.168.1.1 is a valid VLAN IP, the request will be forwarded to https://example.com/path?query=value using that IP.
-
 
 ---
 
@@ -111,7 +106,6 @@ Example error response:
 
 If vlanIP is set to null, the default network interface is used.
 
-
 ---
 
 ## Example
@@ -128,7 +122,6 @@ Target URL: https://jsonplaceholder.typicode.com/posts
 
 Response: The response from https://jsonplaceholder.typicode.com/posts is streamed back to the client.
 
-
 ### Proxy Request Without VLAN IP:
 
 ```bash
@@ -136,7 +129,6 @@ curl http://localhost:5753/null/https://jsonplaceholder.typicode.com/posts
 ```
 
 This routes the request through the default network interface.
-
 
 ---
 
@@ -148,12 +140,9 @@ Ensure the VLAN IP is configured on your system.
 
 Use `null` if no VLAN IP is required.
 
-
-
 ### 2. Invalid Target URL:
 
 Ensure the targetURL is correctly URL-encoded.
-
 
 Example:
 
@@ -161,12 +150,8 @@ Example:
 curl http://localhost:5753/192.168.1.1/https%3A%2F%2Fexample.com
 ```
 
-
-
-
 ---
 
 ## License
 
 This project is licensed under the MIT License.
-

@@ -1,17 +1,21 @@
-import { serve } from "@hono/node-server";
-import { Hono } from "hono";
-import { fetch, Agent } from "undici";
+import { Hono } from 'hono';
+import {
+  Agent,
+  fetch,
+} from 'undici';
+
+import { serve } from '@hono/node-server';
 
 const app = new Hono();
-
-app.get("/", (c) => {
-  return c.text("Hello Hono!");
-});
 
 // Proxy handler
 app.get("/:vlanIP/*", async (c) => {
   const vlanIP = c.req.param("vlanIP");
-  const targetURL = c.req.url.split(`/${vlanIP}/`).pop(); // Capture everything after the VLAN IP
+
+  // Capture everything after the VLAN IP
+  const targetURL = c.req.url.substring(
+    c.req.url.indexOf(vlanIP) + vlanIP.length + 1
+  );
 
   if (!targetURL) {
     return c.json({ error: "Invalid targetURL" }, 400);
@@ -23,6 +27,8 @@ app.get("/:vlanIP/*", async (c) => {
 
     // Parse and validate the target URL
     const parsedURL = new URL(target);
+
+    console.log(`Proxying url(${parsedURL}) through ip(${vlanIP})`);
 
     // Use `fetch` with the localAddress option
     const response = await fetch(parsedURL.toString(), {
@@ -41,14 +47,25 @@ app.get("/:vlanIP/*", async (c) => {
       Object.fromEntries(response.headers.entries())
     );
   } catch (err: any) {
+    console.error(
+      `Failed to proxy "${targetURL}" through ip(${vlanIP}), error(${err.message})`
+    );
     return c.json({ error: err.message }, 500);
   }
 });
 
+// Root endpoint
+app.get("/", (c) => {
+  return c.text("ugo-studio/vlan-proxy");
+});
+
+// Start server
 serve(
   {
     fetch: app.fetch,
     port: Number(process.env.PORT || 5753),
   },
-  ({ port }) => console.log(`Server is running on http://localhost:${port}`)
+  ({ port }) => {
+    console.log(`Proxy server is running on http://localhost:${port}`);
+  }
 );
