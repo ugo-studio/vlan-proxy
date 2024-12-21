@@ -40,7 +40,7 @@ app.get("/:vlanIP/*", async (c) => {
     );
 
     // Fetch with agant
-    const response = await fetch(parsedURL.toString(), {
+    const response = await fetch(parsedURL, {
       agent,
       method: c.req.raw.method,
       headers: c.req.raw.headers,
